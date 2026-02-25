@@ -1,0 +1,1 @@
+cat - | jq -r .response | base64 -d | sed '1,/^\r$/d' | gitleaks stdin --report-format json -r - --no-banner 2>/dev/null || echo '[]'
