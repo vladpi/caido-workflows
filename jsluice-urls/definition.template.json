@@ -4,15 +4,11 @@
   "graph": {
     "edges": [
       {
-        "source": { "exec_alias": "exec", "node_id": 0 },
-        "target": { "exec_alias": "exec", "node_id": 4 }
-      },
-      {
-        "source": { "exec_alias": "true", "node_id": 4 },
+        "source": { "exec_alias": "true", "node_id": 6 },
         "target": { "exec_alias": "exec", "node_id": 2 }
       },
       {
-        "source": { "exec_alias": "false", "node_id": 4 },
+        "source": { "exec_alias": "false", "node_id": 6 },
         "target": { "exec_alias": "exec", "node_id": 1 }
       },
       {
@@ -22,13 +18,25 @@
       {
         "source": { "exec_alias": "exec", "node_id": 3 },
         "target": { "exec_alias": "exec", "node_id": 1 }
+      },
+      {
+        "source": { "exec_alias": "exec", "node_id": 0 },
+        "target": { "exec_alias": "exec", "node_id": 4 }
+      },
+      {
+        "source": { "exec_alias": "true", "node_id": 4 },
+        "target": { "exec_alias": "exec", "node_id": 6 }
+      },
+      {
+        "source": { "exec_alias": "false", "node_id": 4 },
+        "target": { "exec_alias": "exec", "node_id": 1 }
       }
     ],
     "nodes": [
       {
         "alias": "on_intercept_response",
         "definition_id": "caido/on-intercept-response",
-        "display": { "x": -380, "y": 0 },
+        "display": { "x": -740, "y": 0 },
         "id": 0,
         "name": "On Intercept Response",
         "version": "0.1.0"
@@ -36,7 +44,7 @@
       {
         "alias": "passive_end",
         "definition_id": "caido/passive-end",
-        "display": { "x": 400, "y": 0 },
+        "display": { "x": 410, "y": 100 },
         "id": 1,
         "name": "Passive End",
         "version": "0.1.0"
@@ -44,12 +52,20 @@
       {
         "alias": "shell",
         "definition_id": "caido/http-shell-cmd",
-        "display": { "x": -20, "y": 0 },
+        "display": { "x": -20, "y": -10 },
         "id": 2,
         "inputs": [
           {
+            "alias": "request",
+            "value": { "data": "$on_intercept_response.request", "kind": "ref" }
+          },
+          {
+            "alias": "response",
+            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+          },
+          {
             "alias": "shell",
-            "value": { "data": "zsh", "kind": "string" }
+            "value": { "data": "bash", "kind": "string" }
           },
           {
             "alias": "code",
@@ -60,11 +76,7 @@
           },
           {
             "alias": "timeout",
-            "value": { "data": 10000, "kind": "integer" }
-          },
-          {
-            "alias": "request",
-            "value": { "data": "$on_intercept_response.request", "kind": "ref" }
+            "value": { "data": 30000, "kind": "integer" }
           }
         ],
         "name": "jsluice Extract",
@@ -73,7 +85,7 @@
       {
         "alias": "javascript",
         "definition_id": "caido/http-code-js",
-        "display": { "x": 200, "y": 0 },
+        "display": { "x": 170, "y": -10 },
         "id": 3,
         "inputs": [
           {
@@ -90,6 +102,13 @@
           {
             "alias": "response",
             "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+          },
+          {
+            "alias": "extra",
+            "value": {
+              "data": { "stdout": { "data": "$shell.data", "kind": "ref" } },
+              "kind": "map"
+            }
           }
         ],
         "name": "Create Findings",
@@ -98,7 +117,7 @@
       {
         "alias": "in_scope",
         "definition_id": "caido/in-scope",
-        "display": { "x": -200, "y": 0 },
+        "display": { "x": -560, "y": 90 },
         "id": 4,
         "inputs": [
           {
@@ -107,6 +126,31 @@
           }
         ],
         "name": "In Scope",
+        "version": "0.1.0"
+      },
+      {
+        "alias": "if_else_javascript",
+        "definition_id": "caido/http-if-js",
+        "display": { "x": -390, "y": -10 },
+        "id": 6,
+        "inputs": [
+          {
+            "alias": "request",
+            "value": { "data": "$on_intercept_response.request", "kind": "ref" }
+          },
+          {
+            "alias": "response",
+            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+          },
+          {
+            "alias": "code",
+            "value": {
+              "data": { "$file": "content-type-filter.ts" },
+              "kind": "string"
+            }
+          }
+        ],
+        "name": "If/Else Javascript",
         "version": "0.1.0"
       }
     ]

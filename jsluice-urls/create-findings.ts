@@ -1,17 +1,9 @@
-export async function run({ request, response }, sdk) {
-  if (!response || !request) return;
+export async function run({ request, response, extra }, sdk) {
+  if (!request) return;
 
   const url = request.getHost() + request.getPath();
-  const contentType = response.getHeader("content-type") || "";
-
-  const isRelevant = contentType.includes("javascript") ||
-    contentType.includes("html") ||
-    contentType.includes("json") ||
-    url.endsWith(".js") || url.endsWith(".jsx") || url.endsWith(".mjs");
-  if (!isRelevant) return;
-
-  const body = response.getBody()?.toText();
-  if (!body) return;
+  const body = sdk.asString(extra.stdout);
+  if (!body || !body.trim()) return;
 
   const lines = body.trim().split("\n");
   const foundUrls = [];

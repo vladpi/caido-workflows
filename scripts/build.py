@@ -15,7 +15,7 @@ def resolve_file_refs(obj, workflow_dir):
             if not filepath.exists():
                 print(f"ERROR: Referenced file not found: {filepath}", file=sys.stderr)
                 sys.exit(1)
-            return filepath.read_text()
+            return filepath.read_text().rstrip("\n")
         return {k: resolve_file_refs(v, workflow_dir) for k, v in obj.items()}
     if isinstance(obj, list):
         return [resolve_file_refs(item, workflow_dir) for item in obj]

@@ -48,8 +48,16 @@
         "id": 2,
         "inputs": [
           {
+            "alias": "request",
+            "value": { "data": "$on_intercept_response.request", "kind": "ref" }
+          },
+          {
+            "alias": "response",
+            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+          },
+          {
             "alias": "shell",
-            "value": { "data": "zsh", "kind": "string" }
+            "value": { "data": "bash", "kind": "string" }
           },
           {
             "alias": "code",
@@ -60,11 +68,7 @@
           },
           {
             "alias": "timeout",
-            "value": { "data": 10000, "kind": "integer" }
-          },
-          {
-            "alias": "request",
-            "value": { "data": "$on_intercept_response.request", "kind": "ref" }
+            "value": { "data": 30000, "kind": "integer" }
           }
         ],
         "name": "Gitleaks Scan",
@@ -90,6 +94,13 @@
           {
             "alias": "response",
             "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+          },
+          {
+            "alias": "extra",
+            "value": {
+              "data": { "stdout": { "data": "$shell.data", "kind": "ref" } },
+              "kind": "map"
+            }
           }
         ],
         "name": "Create Findings",
