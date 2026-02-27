@@ -4,11 +4,23 @@
   "graph": {
     "edges": [
       {
-        "source": { "exec_alias": "true", "node_id": 6 },
+        "source": { "exec_alias": "exec", "node_id": 0 },
+        "target": { "exec_alias": "exec", "node_id": 4 }
+      },
+      {
+        "source": { "exec_alias": "true", "node_id": 4 },
+        "target": { "exec_alias": "exec", "node_id": 5 }
+      },
+      {
+        "source": { "exec_alias": "false", "node_id": 4 },
+        "target": { "exec_alias": "exec", "node_id": 1 }
+      },
+      {
+        "source": { "exec_alias": "true", "node_id": 5 },
         "target": { "exec_alias": "exec", "node_id": 2 }
       },
       {
-        "source": { "exec_alias": "false", "node_id": 6 },
+        "source": { "exec_alias": "false", "node_id": 5 },
         "target": { "exec_alias": "exec", "node_id": 1 }
       },
       {
@@ -18,25 +30,13 @@
       {
         "source": { "exec_alias": "exec", "node_id": 3 },
         "target": { "exec_alias": "exec", "node_id": 1 }
-      },
-      {
-        "source": { "exec_alias": "exec", "node_id": 0 },
-        "target": { "exec_alias": "exec", "node_id": 4 }
-      },
-      {
-        "source": { "exec_alias": "true", "node_id": 4 },
-        "target": { "exec_alias": "exec", "node_id": 6 }
-      },
-      {
-        "source": { "exec_alias": "false", "node_id": 4 },
-        "target": { "exec_alias": "exec", "node_id": 1 }
       }
     ],
     "nodes": [
       {
         "alias": "on_intercept_response",
         "definition_id": "caido/on-intercept-response",
-        "display": { "x": -740, "y": 0 },
+        "display": { "x": -560, "y": 0 },
         "id": 0,
         "name": "On Intercept Response",
         "version": "0.1.0"
@@ -44,7 +44,7 @@
       {
         "alias": "passive_end",
         "definition_id": "caido/passive-end",
-        "display": { "x": 410, "y": 100 },
+        "display": { "x": 400, "y": 100 },
         "id": 1,
         "name": "Passive End",
         "version": "0.1.0"
@@ -52,7 +52,7 @@
       {
         "alias": "shell",
         "definition_id": "caido/http-shell-cmd",
-        "display": { "x": -20, "y": -10 },
+        "display": { "x": -20, "y": 0 },
         "id": 2,
         "inputs": [
           {
@@ -61,7 +61,10 @@
           },
           {
             "alias": "response",
-            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+            "value": {
+              "data": "$on_intercept_response.response",
+              "kind": "ref"
+            }
           },
           {
             "alias": "shell",
@@ -80,7 +83,10 @@
           },
           {
             "alias": "init",
-            "value": { "data": "export PATH=\"$PATH:/opt/homebrew/bin:~/go/bin\"", "kind": "string" }
+            "value": {
+              "data": "export PATH=\"$PATH:/opt/homebrew/bin:~/go/bin\"",
+              "kind": "string"
+            }
           }
         ],
         "name": "jsluice Extract",
@@ -89,7 +95,7 @@
       {
         "alias": "javascript",
         "definition_id": "caido/http-code-js",
-        "display": { "x": 170, "y": -10 },
+        "display": { "x": 200, "y": 0 },
         "id": 3,
         "inputs": [
           {
@@ -105,7 +111,10 @@
           },
           {
             "alias": "response",
-            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+            "value": {
+              "data": "$on_intercept_response.response",
+              "kind": "ref"
+            }
           },
           {
             "alias": "extra",
@@ -121,7 +130,7 @@
       {
         "alias": "in_scope",
         "definition_id": "caido/in-scope",
-        "display": { "x": -560, "y": 90 },
+        "display": { "x": -380, "y": 0 },
         "id": 4,
         "inputs": [
           {
@@ -133,10 +142,10 @@
         "version": "0.1.0"
       },
       {
-        "alias": "if_else_javascript",
-        "definition_id": "caido/http-if-js",
-        "display": { "x": -390, "y": -10 },
-        "id": 6,
+        "alias": "matches_httpql",
+        "definition_id": "caido/httpql-matches",
+        "display": { "x": -200, "y": 0 },
+        "id": 5,
         "inputs": [
           {
             "alias": "request",
@@ -144,18 +153,21 @@
           },
           {
             "alias": "response",
-            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+            "value": {
+              "data": "$on_intercept_response.response",
+              "kind": "ref"
+            }
           },
           {
-            "alias": "code",
+            "alias": "query",
             "value": {
-              "data": { "$file": "content-type-filter.ts" },
+              "data": "resp.raw.regex:/Content-Type: (text\/(html|javascript)|application\/(json|javascript))/",
               "kind": "string"
             }
           }
         ],
-        "name": "If/Else Javascript",
-        "version": "0.1.0"
+        "name": "Matches HTTPQL",
+        "version": "0.2.0"
       }
     ]
   },

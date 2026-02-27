@@ -9,10 +9,18 @@
       },
       {
         "source": { "exec_alias": "true", "node_id": 4 },
-        "target": { "exec_alias": "exec", "node_id": 2 }
+        "target": { "exec_alias": "exec", "node_id": 5 }
       },
       {
         "source": { "exec_alias": "false", "node_id": 4 },
+        "target": { "exec_alias": "exec", "node_id": 1 }
+      },
+      {
+        "source": { "exec_alias": "true", "node_id": 5 },
+        "target": { "exec_alias": "exec", "node_id": 2 }
+      },
+      {
+        "source": { "exec_alias": "false", "node_id": 5 },
         "target": { "exec_alias": "exec", "node_id": 1 }
       },
       {
@@ -28,7 +36,7 @@
       {
         "alias": "on_intercept_response",
         "definition_id": "caido/on-intercept-response",
-        "display": { "x": -380, "y": 0 },
+        "display": { "x": -560, "y": 0 },
         "id": 0,
         "name": "On Intercept Response",
         "version": "0.1.0"
@@ -36,7 +44,7 @@
       {
         "alias": "passive_end",
         "definition_id": "caido/passive-end",
-        "display": { "x": 400, "y": 0 },
+        "display": { "x": 400, "y": 100 },
         "id": 1,
         "name": "Passive End",
         "version": "0.1.0"
@@ -53,7 +61,10 @@
           },
           {
             "alias": "response",
-            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+            "value": {
+              "data": "$on_intercept_response.response",
+              "kind": "ref"
+            }
           },
           {
             "alias": "shell",
@@ -72,7 +83,10 @@
           },
           {
             "alias": "init",
-            "value": { "data": "export PATH=\"$PATH:/opt/homebrew/bin:~/go/bin\"", "kind": "string" }
+            "value": {
+              "data": "export PATH=\"$PATH:/opt/homebrew/bin:~/go/bin\"",
+              "kind": "string"
+            }
           }
         ],
         "name": "Gitleaks Scan",
@@ -97,7 +111,10 @@
           },
           {
             "alias": "response",
-            "value": { "data": "$on_intercept_response.response", "kind": "ref" }
+            "value": {
+              "data": "$on_intercept_response.response",
+              "kind": "ref"
+            }
           },
           {
             "alias": "extra",
@@ -113,7 +130,7 @@
       {
         "alias": "in_scope",
         "definition_id": "caido/in-scope",
-        "display": { "x": -200, "y": 0 },
+        "display": { "x": -380, "y": 0 },
         "id": 4,
         "inputs": [
           {
@@ -123,6 +140,34 @@
         ],
         "name": "In Scope",
         "version": "0.1.0"
+      },
+      {
+        "alias": "matches_httpql",
+        "definition_id": "caido/httpql-matches",
+        "display": { "x": -200, "y": 0 },
+        "id": 5,
+        "inputs": [
+          {
+            "alias": "request",
+            "value": { "data": "$on_intercept_response.request", "kind": "ref" }
+          },
+          {
+            "alias": "response",
+            "value": {
+              "data": "$on_intercept_response.response",
+              "kind": "ref"
+            }
+          },
+          {
+            "alias": "query",
+            "value": {
+              "data": "resp.raw.regex:/Content-Type: (text\/(html|javascript)|application\/(json|javascript))/",
+              "kind": "string"
+            }
+          }
+        ],
+        "name": "Matches HTTPQL",
+        "version": "0.2.0"
       }
     ]
   },
