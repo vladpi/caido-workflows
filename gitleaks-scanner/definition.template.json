@@ -69,6 +69,10 @@
           {
             "alias": "timeout",
             "value": { "data": 30000, "kind": "integer" }
+          },
+          {
+            "alias": "init",
+            "value": { "data": "export PATH=\"$PATH:/opt/homebrew/bin:~/go/bin\"", "kind": "string" }
           }
         ],
         "name": "Gitleaks Scan",
