@@ -1,18 +1,13 @@
 # Gitleaks Scanner
 
-Caido passive workflow that scans HTTP response bodies for leaked secrets (API keys, tokens, credentials) using [gitleaks](https://github.com/gitleaks/gitleaks).
+Caido passive workflow that automatically scans HTTP response bodies for leaked secrets (API keys, tokens, credentials) using [gitleaks](https://github.com/gitleaks/gitleaks). Findings are grouped by rule and deduplicated.
 
 ## Prerequisites
 
 ```bash
-brew install gitleaks
+brew install gitleaks jq
 ```
 
-## How it works
+## What it catches
 
-```
-On Intercept Response → In Scope → Shell (gitleaks) → JavaScript (create findings) → Passive End
-```
-
-1. **Shell node** extracts the response body from Caido's STDIN JSON and pipes it to `gitleaks stdin`
-2. **JavaScript node** parses gitleaks JSON output and creates deduplicated Caido findings
+API keys, tokens, passwords, private keys, cloud credentials, and other secrets — anything gitleaks detects with its [default ruleset](https://github.com/gitleaks/gitleaks#rules).

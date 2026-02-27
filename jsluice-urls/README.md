@@ -1,18 +1,17 @@
 # jsluice URL Extractor
 
-Caido passive workflow that extracts URLs, API endpoints, and paths from JavaScript and HTML responses using [jsluice](https://github.com/BishopFox/jsluice).
+Caido passive workflow that automatically extracts URLs, API endpoints, and paths from JavaScript responses using [jsluice](https://github.com/BishopFox/jsluice). Only processes responses with `Content-Type: javascript`.
 
 ## Prerequisites
 
 ```bash
 go install github.com/BishopFox/jsluice/cmd/jsluice@latest
+brew install jq
 ```
 
-## How it works
+## What it finds
 
-```
-On Intercept Response → In Scope → Shell (jsluice) → JavaScript (create findings) → Passive End
-```
-
-1. **Shell node** extracts the response body from Caido's STDIN JSON and pipes it to `jsluice urls`
-2. **JavaScript node** parses jsluice JSONL output, categorizes URLs (API endpoints, external URLs, paths), and creates deduplicated Caido findings
+URLs extracted from JS files, categorized as:
+- **API endpoints** — paths matching `/api/`, `/v1/`, `/graphql`, etc.
+- **External URLs** — full `https://` links to third-party services
+- **Paths** — relative paths and routes

@@ -4,26 +4,20 @@ Custom passive workflows for [Caido](https://caido.io/) proxy, designed for bug 
 
 ## Workflows
 
-| Workflow | Description |
-|----------|-------------|
-| [gitleaks-scanner](gitleaks-scanner/) | Detect leaked secrets in HTTP responses |
-| [jsluice-urls](jsluice-urls/) | Extract URLs and API endpoints from JS/HTML responses |
+| Workflow | Tool | Description |
+|----------|------|-------------|
+| [gitleaks-scanner](gitleaks-scanner/) | gitleaks | Detect leaked secrets in HTTP responses |
+| [jsluice-urls](jsluice-urls/) | jsluice | Extract URLs and API endpoints from JS responses |
 
 ## Installation
 
-1. Download the `.json` file for the desired workflow from the [latest release](../../releases/latest), or build locally with `python3 scripts/build.py` (output in `dist/`)
-2. Open Caido → Workflows → Import → select the downloaded file
-3. Enable the workflow
+1. Install prerequisites (see each workflow's README) — all workflows also require `jq` (`brew install jq`)
+2. Download the `.json` file from the [latest release](../../releases/latest), or build with `python3 scripts/build.py`
+3. Caido → Workflows → Import → select the file → Enable
 
 ### PATH configuration
 
-If the CLI tools are not found, add to the Shell node **Init** section:
-
-```bash
-source ~/.zshrc
-# or explicitly:
-# export PATH="$PATH:/opt/homebrew/bin:$HOME/go/bin"
-```
+The workflows add `/opt/homebrew/bin` and `~/go/bin` to PATH by default. If your tools are installed elsewhere, edit the **Init** field in the Shell node.
 
 ## License
 
