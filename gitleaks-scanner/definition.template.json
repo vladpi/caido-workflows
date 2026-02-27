@@ -161,7 +161,7 @@
           {
             "alias": "query",
             "value": {
-              "data": "resp.raw.regex:/Content-Type: (text\/(html|javascript)|application\/(json|javascript))/",
+              "data": "resp.raw.regex:/Content-Type: (text\\/(html|javascript)|application\\/(json|javascript))/",
               "kind": "string"
             }
           }
