@@ -161,7 +161,7 @@
           {
             "alias": "query",
             "value": {
-              "data": "resp.raw.regex:/Content-Type: (text\\/(html|javascript)|application\\/(json|javascript))/",
+              "data": "resp.raw.nregex:/Content-Type: (image\\/|audio\\/|video\\/|font\\/|application\\/(octet-stream|zip|gzip|pdf|woff|wasm|protobuf))/",
               "kind": "string"
             }
           }
