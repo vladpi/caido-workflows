@@ -1,3 +1,11 @@
+function hash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (h * 31 + str.charCodeAt(i)) | 0;
+  }
+  return (h >>> 0).toString(36);
+}
+
 export async function run({ request, response, extra }, sdk) {
   if (!request) return;
 
@@ -20,24 +28,52 @@ export async function run({ request, response, extra }, sdk) {
 
   if (foundUrls.length === 0) return;
 
-  const unique = [...new Map(foundUrls.map(u => [u.url, u])).values()];
+  const unique = [...new Map(foundUrls.map((u) => [u.url, u])).values()];
 
-  const apiUrls = unique.filter(u => /\/api\//i.test(u.url) || /\/v[0-9]+\//i.test(u.url) || /graphql/i.test(u.url));
-  const externalUrls = unique.filter(u => /^https?:\/\//.test(u.url) && !apiUrls.includes(u));
-  const paths = unique.filter(u => !apiUrls.includes(u) && !externalUrls.includes(u));
+  const urls = unique.filter((u) => /^https?:\/\//.test(u.url));
+  const paths = unique.filter((u) => !/^https?:\/\//.test(u.url));
 
-  const sections = [];
-  if (apiUrls.length > 0) sections.push("**API Endpoints (" + apiUrls.length + "):**\n" + apiUrls.map(u => "- `" + u.url + "` (" + (u.type || "") + ")").join("\n"));
-  if (externalUrls.length > 0) sections.push("**External URLs (" + externalUrls.length + "):**\n" + externalUrls.map(u => "- `" + u.url + "`").join("\n"));
-  if (paths.length > 0) sections.push("**Paths (" + paths.length + "):**\n" + paths.map(u => "- `" + u.url + "`").join("\n"));
+  if (urls.length > 0) {
+    const h = hash(
+      urls
+        .map((u) => u.url)
+        .sort()
+        .join(","),
+    );
+    await sdk.findings.create({
+      title: "[jsluice] " + urls.length + " URLs",
+      description:
+        "**Source:** " +
+        url +
+        "\n\n```\n" +
+        urls.map((u) => u.url).join("\n") +
+        "\n```",
+      reporter: "jsluice URL Extractor",
+      request: request,
+      dedupeKey: "jsluice-urls-" + url + "-" + h,
+    });
+  }
 
-  await sdk.findings.create({
-    title: "[jsluice] " + unique.length + " URLs extracted",
-    description: "**Source:** " + url + "\n**Total:** " + unique.length + "\n\n" + sections.join("\n\n"),
-    reporter: "jsluice URL Extractor",
-    request: request,
-    dedupeKey: "jsluice-" + url
-  });
+  if (paths.length > 0) {
+    const h = hash(
+      paths
+        .map((u) => u.url)
+        .sort()
+        .join(","),
+    );
+    await sdk.findings.create({
+      title: "[jsluice] " + paths.length + " paths",
+      description:
+        "**Source:** " +
+        url +
+        "\n\n```\n" +
+        paths.map((u) => u.url).join("\n") +
+        "\n```",
+      reporter: "jsluice URL Extractor",
+      request: request,
+      dedupeKey: "jsluice-paths-" + url + "-" + h,
+    });
+  }
 
   sdk.console.log("[jsluice] Found " + unique.length + " URL(s) in " + url);
 }
