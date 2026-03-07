@@ -49,7 +49,7 @@ export async function run({ request, response, extra }, sdk) {
       reporter: "Gitleaks Scanner",
       request: request,
       dedupeKey:
-        "gitleaks-" + ruleId + "-" + url + "-" + hash(sorted.join(",")),
+        "gitleaks-" + ruleId + "-" + hash(sorted.join(",")),
     });
   }
   sdk.console.log("[Gitleaks] Found " + leaks.length + " leak(s) at " + url);

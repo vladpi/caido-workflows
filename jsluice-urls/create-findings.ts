@@ -50,7 +50,7 @@ export async function run({ request, response, extra }, sdk) {
         "\n```",
       reporter: "jsluice URL Extractor",
       request: request,
-      dedupeKey: "jsluice-urls-" + url + "-" + h,
+      dedupeKey: "jsluice-urls-" + h,
     });
   }
 
@@ -71,7 +71,7 @@ export async function run({ request, response, extra }, sdk) {
         "\n```",
       reporter: "jsluice URL Extractor",
       request: request,
-      dedupeKey: "jsluice-paths-" + url + "-" + h,
+      dedupeKey: "jsluice-paths-" + h,
     });
   }
 
